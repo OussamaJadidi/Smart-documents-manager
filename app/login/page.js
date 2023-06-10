@@ -8,9 +8,7 @@ export default function Login({ admin = true }) {
     const res = await signIn("credentials",{
       nom: document.querySelector("#nom").value,
       prenom: document.querySelector("#password").value,
-      redirect: false
     })
-    console.log(res)
   }
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-white">
