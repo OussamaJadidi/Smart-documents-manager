@@ -10,18 +10,26 @@ datasource db {
 model users {
   Id_user String @id @default(uuid())
 
-  nom     String @db.VarChar(50)
-  prenom  String @db.VarChar(50)
+  nom     String  @db.VarChar(50)
+  prenom  String  @db.VarChar(50)
   ppr     Int
-  email   String
+  email   String?
   cnt     Int
-  cin     String @db.VarChar(50)
+  cin     String  @db.VarChar(50)
   grade   Int
   echelle Int
   echelon Int
-  service String @db.VarChar(255)
-  option  String @db.VarChar(255)
-  adresse String @db.VarChar(50)
-  sexe    String @db.VarChar(50)
-  image   Bytes  @db.Blob
+  service String  @db.VarChar(255)
+  option  String  @db.VarChar(255)
+  adresse String  @db.VarChar(50)
+  sexe    String  @db.VarChar(50)
+  image   Bytes?  @db.Blob
+  role    Role    @default(Basic)
+
+  @@unique([nom, prenom])
+}
+
+enum Role {
+  Basic
+  Admin
 }
