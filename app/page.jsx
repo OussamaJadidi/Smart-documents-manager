@@ -1,16 +1,11 @@
-"use client"
-import {  useSession } from "next-auth/react";
-
-const Home = () => {
-  const data = useSession();
-
-  const usehr = data.user;
-  console.log(data)
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
+import  {Signin} from "/component/Buttons"
+export default function Home() {
+  
   return (
     <div>
-      <h1>Hello, {JSON.stringify(data)}</h1>
+     <Signin />
     </div>
-  );
-};
-
-export default Home;
+  )
+}

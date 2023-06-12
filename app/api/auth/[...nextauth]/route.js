@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import useImage from "use-image"
 const handler = NextAuth({
-  session:{
-    strategy: 'jwt'
+  session: {
+    strategy: "jwt",
   },
   //authOptions
   providers: [
@@ -20,27 +20,92 @@ const handler = NextAuth({
         nom: { label: "Nom", type: "password" },
       },
       async authorize(credentials) {
-        // if (!credentials?.nom || !credentials?.prenom) {
-        //   return null;
-        // }
+        if (!credentials?.nom || !credentials?.prenom) {
+          return null;
+        }
 
-        // const prisma = new PrismaClient();
-        // const user= await prisma.users.findUnique({
-        //   where: {
-        //     nom_prenom:{
-        //       nom: credentials.nom,
-        //       prenom: credentials.prenom
-        //     }
-        //   },
-        // })
-        // if (!user) return null;
-        // console.log("here is the user",user)
-        const user = { id:11,nom: "oussama", prenom: "jadidi", age:22}
-        return user
+        const prisma = new PrismaClient();
+        const user = await prisma.users.findUnique({
+          where: {
+            nom_prenom: {
+              nom: credentials.nom,
+              prenom: credentials.prenom,
+            },
+          },
+        });
+        if (!user) return null;
+
+       
+        // console.log("imaammmagee",image)
+        return {
+          id: user.Id_user,
+          name: user.nom,
+          image: user.image.toString(),
+          prenom: user.prenom,
+          email: user.email,
+          ppr: user.ppr,
+          cnt: user.cnt,
+          cin: user.cin,
+          grade: user.grade,
+          echelle: user.echelle,
+          echelon: user.echelon,
+          service: user.service,
+          option: user.option,
+          adresse: user.adresse,
+          sexe: user.sexe,
+          role : user.role
+        };
       },
     }),
   ],
- 
+  callbacks: {
+    async jwt({ token, user }) {
+      console.log("JWT Token callbacks : **token",token,"**user:",user)
+      if(user){
+        return{
+          ...token,
+          id: user.id,
+          prenom: user.prenom,
+          ppr: user.ppr,
+          cnt: user.cnt,
+          cin: user.cin,
+          grade: user.grade,
+          echelle: user.echelle,
+          echelon: user.echelon,
+          service: user.service,
+          option: user.option,
+          adresse: user.adresse,
+          sexe: user.sexe,
+          role : user.role
+        }
+      }
+      return  token
+    },
+    async session({session,token}){
+      console.log("Session Callback: **session: ",session,"**token",token)
+      
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          prenom: token.prenom,
+          ppr: token.ppr,
+          cnt: token.cnt,
+          cin: token.cin,
+          grade: token.grade,
+          echelle: token.echelle,
+          echelon: token.echelon,
+          service: token.service,
+          option: token.option,
+          adresse: token.adresse,
+          sexe: token.sexe,
+          role : token.role
+        }
+    }
+    return session
+    }
+  },
 });
 
 export { handler as GET, handler as POST };
