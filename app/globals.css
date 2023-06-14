@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&family=Poppins&family=Roboto:wght@400;500;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,4 +26,20 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+* {
+  box-sizing: border-box;
+}
+/* app/header/page.js */
+
+.menuBigScreen {
+  gap: 0.5rem;
+}
+.menuBigScreen > * {
+  width: fit-content;
+  font-size: 1rem;
+  font-family: "Roboto";
+}
+.menuBigScreen > *:hover {
+  border-bottom: 1px solid blue;
 }

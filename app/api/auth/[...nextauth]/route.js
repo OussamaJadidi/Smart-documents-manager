@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import useImage from "use-image"
-const handler = NextAuth({
+import { disconnect } from "process";
+import useImage from "use-image";
+export const authOptions ={
   session: {
     strategy: "jwt",
   },
@@ -33,14 +34,26 @@ const handler = NextAuth({
             },
           },
         });
+        const disconnect = await prisma.$disconnect();
+
         if (!user) return null;
 
-       
-        // console.log("imaammmagee",image)
+        // const blob = new Blob([user.image], { type: 'image/jpeg' }); // Replace 'image/jpeg' with the appropriate MIME type for your image format
+        // const imageUrl = URL.createObjectURL(blob);
+        // console.log("imaammmagee",imageUrl)
+        // const imageBuffer = Buffer.from(user.img);
+
+        // const base64String = btoa(imageBuffer);
+
+        // const img = document.createElement("img");
+        // img.src = "data:image/jpeg;base64,${base64String}";
+        // const imageData = await fetchImageData(user.image);
+        // const imageBase64String = btoa(imageBuffer);
+
+      
         return {
           id: user.Id_user,
           name: user.nom,
-          image: user.image.toString(),
           prenom: user.prenom,
           email: user.email,
           ppr: user.ppr,
@@ -53,19 +66,20 @@ const handler = NextAuth({
           option: user.option,
           adresse: user.adresse,
           sexe: user.sexe,
-          role : user.role
+          role: user.role,
         };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      console.log("JWT Token callbacks : **token",token,"**user:",user)
-      if(user){
-        return{
+      console.log("JWT Token callbacks : **token", token, "**user:", user);
+      if (user) {
+        return {
           ...token,
           id: user.id,
           prenom: user.prenom,
+          imageURL: user.imageURL,
           ppr: user.ppr,
           cnt: user.cnt,
           cin: user.cin,
@@ -76,20 +90,21 @@ const handler = NextAuth({
           option: user.option,
           adresse: user.adresse,
           sexe: user.sexe,
-          role : user.role
-        }
+          role: user.role,
+        };
       }
-      return  token
+      return token;
     },
-    async session({session,token}){
-      console.log("Session Callback: **session: ",session,"**token",token)
-      
+    async session({ session, token }) {
+      console.log("Session Callback: **session: ", session, "**token", token);
+
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
           prenom: token.prenom,
+          imageURL: token.imageURL,
           ppr: token.ppr,
           cnt: token.cnt,
           cin: token.cin,
@@ -100,12 +115,12 @@ const handler = NextAuth({
           option: token.option,
           adresse: token.adresse,
           sexe: token.sexe,
-          role : token.role
-        }
-    }
-    return session
-    }
+          role: token.role,
+        },
+      };
+      return session;
+    },
   },
-});
-
-export { handler as GET, handler as POST };
+};
+const handler =NextAuth(authOptions);
+export { handler as GET, handler as POST}

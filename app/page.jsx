@@ -1,11 +1,9 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { getServerSession } from 'next-auth'
-import  {Signin} from "/component/Buttons"
-export default function Home() {
-  
+import Signin from "@/components/Buttons";
+export default  function Homme() {
+ 
   return (
     <div>
-     <Signin />
+      <Signin />
     </div>
-  )
+  );
 }
