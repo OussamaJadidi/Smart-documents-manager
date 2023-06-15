@@ -38,19 +38,6 @@ export const authOptions ={
 
         if (!user) return null;
 
-        // const blob = new Blob([user.image], { type: 'image/jpeg' }); // Replace 'image/jpeg' with the appropriate MIME type for your image format
-        // const imageUrl = URL.createObjectURL(blob);
-        // console.log("imaammmagee",imageUrl)
-        // const imageBuffer = Buffer.from(user.img);
-
-        // const base64String = btoa(imageBuffer);
-
-        // const img = document.createElement("img");
-        // img.src = "data:image/jpeg;base64,${base64String}";
-        // const imageData = await fetchImageData(user.image);
-        // const imageBase64String = btoa(imageBuffer);
-
-      
         return {
           id: user.Id_user,
           name: user.nom,
@@ -73,7 +60,6 @@ export const authOptions ={
   ],
   callbacks: {
     async jwt({ token, user }) {
-      console.log("JWT Token callbacks : **token", token, "**user:", user);
       if (user) {
         return {
           ...token,
@@ -96,8 +82,6 @@ export const authOptions ={
       return token;
     },
     async session({ session, token }) {
-      console.log("Session Callback: **session: ", session, "**token", token);
-
       return {
         ...session,
         user: {

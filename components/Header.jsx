@@ -37,7 +37,7 @@ export default function Header({name,prenom}) {
             <FontAwesomeIcon icon={faBars} style={{fontSize: "2rem"}} onClick={()=> {setMenuOpen(!menuOpen)}}/> 
           }  
           {menuOpen &&
-          <div className='absolute  left-1/2 translate-x-[-50%] top-24 flex justify-center border bg-white border-black w-10/12  py-6  z-40'>
+          <div className='absolute  left-1/2 translate-x-[-50%] top-24 flex justify-center border bg-white border-black w-10/12  py-6  z-40 rounded-lg'>
           <ul className='menuBigScreen flex flex-col items-center font-satoshi font-medium w-fit   z-40'>
               <li className='hover:text-blue-700 hover:font-semibold ml-2 mb-1 border-b-2 '><Link href="./">Accueil</Link></li>
               <li className='hover:text-blue-700 hover:font-semibold ml-2 mb-1 border-b-2 '><a href='#impressionDesDocuments'>Impression des documents</a></li>
