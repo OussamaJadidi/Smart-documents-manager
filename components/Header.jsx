@@ -10,6 +10,7 @@ import {
   faBars,
   faX
 } from "@fortawesome/free-solid-svg-icons";
+import { SignoutLg, SignoutSm } from './Buttons'
 
 
 export default function Header({name,prenom}) {
@@ -28,7 +29,7 @@ export default function Header({name,prenom}) {
                <li className='hover:text-blue-700 hover:font-semibold ml-2'><a href='#impressionDesDocuments'>Impression des documents</a></li>
                <li className='hover:text-blue-700 hover:font-semibold ml-2'><a href="#guideDesFormations">Guide Formations</a></li>
            </ul>
-           <button className='flex bg-blue-700 rounded-md text-white px-4 py-2 font-medium hover:scale-95 hover:shadow hover:shadow-blue-500 transition-transform'>Se deconnecter</button>
+           <SignoutLg />
         </div> 
         
         <div className="md:hidden tracking-tighter  items-center z-40">
@@ -42,14 +43,14 @@ export default function Header({name,prenom}) {
               <li className='hover:text-blue-700 hover:font-semibold ml-2 mb-1 border-b-2 '><Link href="./">Accueil</Link></li>
               <li className='hover:text-blue-700 hover:font-semibold ml-2 mb-1 border-b-2 '><a href='#impressionDesDocuments'>Impression des documents</a></li>
               <li className='hover:text-blue-700 hover:font-semibold ml-2 mb-1 border-b-2 '><a href="#guideDesFormations">Guide Formations</a></li>
-              <li className='hover:text-blue-700 hover:font-semibold ml-2 mb-1 border-b-2 '><button>Se deconnecter</button></li>
+              <SignoutSm />
           </ul>
         </div> 
           }
           
         </div>
     </header>
-    <div className={menuOpen ?'absolute top-0 bottom-0 right-0 left-0 bg-gradient-to-t from-gray-300 to-transparent' : 'hidden'}></div>
+    <div className={menuOpen ?'absolute top-0 bottom-0 right-0 left-0 bg-gradient-to-t from-gray-400 to-transparent' : 'hidden'}></div>
 
     </>
   )

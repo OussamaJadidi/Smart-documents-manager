@@ -6,7 +6,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/free-brands-svg-icons";
 config.autoAddCss = false;
-
+import ToasterContext from "@/components/ToasterContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full bg-white">
       <body className="h-full bg-white font-satoshi">
-        <Provider >{children}</Provider>
+        <Provider ><ToasterContext />{children}</Provider>
       </body>
     </html>
   );

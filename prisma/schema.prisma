@@ -25,10 +25,20 @@ model users {
   sexe    String  @db.VarChar(50)
   image   Bytes?
   role    Role    @default(Basic)
-
   @@unique([nom, prenom])
+  documents   Document[]
 }
 
+model Document {
+  id        String @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      users @relation(fields: [userId], references: [Id_user])
+  userId    String
+}
 enum Role {
   Basic
   Admin

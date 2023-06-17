@@ -1,18 +1,22 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { useState } from "react"
-
+import { toast } from "react-hot-toast";
+import  Link  from "next/link"
 export default function Login({ admin = false }) {
   const [credentials, setCredentials] = useState({ nom: "", prenom: "" });
-
   async function handleSubmit(e) {
     e.preventDefault();
 
     const res = await signIn("credentials", {
       nom: credentials.nom,
       prenom: credentials.prenom,
-      redirect: false
+      // callbackUrl: "/Homme"
+      redirect: false 
     })
+    .then(callback =>{ if(callback?.error) {toast.error(callback.error)};
+    if(callback?.ok && !callback?.error){toast.success("Connectez-vous avec succès");
+  window.location.href="/Homme"}})
   }
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-white">
@@ -34,7 +38,7 @@ export default function Login({ admin = false }) {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <htmlForm className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" action="#" method="POST">
           <>
             <div>
               <label
@@ -82,7 +86,7 @@ export default function Login({ admin = false }) {
               <div className="text-sm text-end">
                 <a
                   href="#"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  className="font-semibold text-indigo-600 hover:text-indigo-500" onClick={(e)=>{e.preventDefault(); toast("Consulter votre chef de service")}}
                 >
                   Identifiants oubliés?
                 </a>
@@ -99,18 +103,17 @@ export default function Login({ admin = false }) {
               Se connnecter
             </button>
           </div>
-        </htmlForm>
+        </form>
 
         {!admin && (
           <p className="mt-10 text-center text-sm text-gray-500">
             Pas un membre?
-            <a
-              href="#"
+            <Link
+              href="/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              {" "}
               Ajouter mon compte
-            </a>
+            </Link>
           </p>
         )}
       </div>

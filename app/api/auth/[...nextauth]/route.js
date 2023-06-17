@@ -22,22 +22,21 @@ export const authOptions ={
       },
       async authorize(credentials) {
         if (!credentials?.nom || !credentials?.prenom) {
-          return null;
+          throw new Error("Entrer votre Nom et Prénom")
         }
 
         const prisma = new PrismaClient();
         const user = await prisma.users.findUnique({
           where: {
             nom_prenom: {
-              nom: credentials.nom,
-              prenom: credentials.prenom,
+              nom: credentials.nom.toUpperCase(),
+              prenom: credentials.prenom.toUpperCase(),
             },
           },
         });
         const disconnect = await prisma.$disconnect();
 
-        if (!user) return null;
-
+        if (!user) throw new Error("Utilisateur non trouvé")
         return {
           id: user.Id_user,
           name: user.nom,
@@ -104,7 +103,15 @@ export const authOptions ={
       };
       return session;
     },
+    
   },
+  async signIn(){
+      return "/Homme"
+  },
+  pages: {
+    signIn: '/login',
+    signOut:  '/login'
+  }
 };
 const handler =NextAuth(authOptions);
 export { handler as GET, handler as POST}

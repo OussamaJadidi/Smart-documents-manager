@@ -126,8 +126,6 @@ export default function Main() {
         </div>
       {/* End impression des document Card  */}
 
-      {/*  Guide de formation  */}
-      {/*  Guide de formation  */}
     </div>
   );
 }

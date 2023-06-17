@@ -19,10 +19,10 @@ export default function Template({children,title, handleDocumentsComponents}) {
 
             {children}
         <div className='flex justify-center md:justify-end px-6 pt-4 gap-2'>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded">
             Imprimer
             </button>
-            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-4 rounded">
             Télécharger
             </button>
         </div>

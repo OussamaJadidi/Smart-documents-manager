@@ -9,7 +9,9 @@ import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import MoreData from "@/../components/CSR_components/MoreData"
-import Main from "@/components/CSR_components/Main"
+import ImpressionDesDocuments from "@/components/CSR_components/ImpressionDesDocuments"
+import AjouterGuideFormation from "@/components/CSR_components/AjouterGuideFormation"
+import MesFormations from "@/components/CSR_components/MesFormations"
 
 export default async function Homme() {
   //Get the user data from the session
@@ -27,13 +29,16 @@ export default async function Homme() {
     },
   });
   await prisma.$disconnect();
-  const bufferData = user.image; // The <Buffer> image data
-  // Convert the buffer data to a base64-encoded string
-  const base64String = bufferData.toString("base64");
-  // Create an <img> element and set the src attribute to the base64 string
-  const ssrc = "data:image/jpeg;base64," + base64String;
-  //Start pulled buffered data from the database and convert it to an image
+  console.log("hiiiiiii")
+  if(user.image){
 
+      var bufferData = user.image; // The <Buffer> image data
+      // Convert the buffer data to a base64-encoded string
+      var base64String = bufferData.toString("base64");
+      // Create an <img> element and set the src attribute to the base64 string
+      var ssrc = "data:image/jpeg;base64," + base64String;
+  }
+  
   return (
     <div className="w-full">
 {/* Start Header  */}
@@ -48,16 +53,15 @@ export default async function Homme() {
         <div className="dataCard  flex justify-between  items-center">
           <div className="flex">
             <img
-              src={ssrc}
+              src={user.image ? ssrc: ""}
               width={70}
               height={70}
               className="rounded-md hover:scale-110 transition-transform"
             />
             <div className="relative top-2 left-2">
-              <h1 className="font-bold font-roboto text-lg">Oussama jadidi</h1>
+              <h1 className="font-bold font-roboto text-lg">{`${user.nom} ${user.prenom}`}</h1>
               <h4 className="font-italic text-sm text-gray-500">
-                {" "}
-                Technicien en Développement informatique
+                {user.option}
               </h4>
             </div>
           </div>
@@ -101,7 +105,7 @@ export default async function Homme() {
           </div>
           <div className="secondRow pl-8">
             <div>
-              <span className="font-roboto font-bold">P.P.R : </span>
+              <span className="font-roboto font-bold">P.P.R/C.N.T : </span>
               <span>{session.user.ppr}</span>
             </div>
             <div>
@@ -116,10 +120,7 @@ export default async function Homme() {
               <span className="font-roboto font-bold">Echelon : </span>
               <span>{session.user.echelon}</span>
             </div>
-            <div>
-              <span className="font-roboto font-bold">C.N.T : </span>
-              <span>{session.user.cnt}</span>
-            </div>
+            
           </div>
         </div>
         <MoreData />
@@ -127,8 +128,14 @@ export default async function Homme() {
 {/* End Card of the user data  */}
         
 {/* Start Impression des documents */}
-        <Main />
+        <ImpressionDesDocuments />
 {/* End Impression des documents */}
+{/* Start Ajouter Guide formation */}
+          <AjouterGuideFormation />
+{/* End Ajouter Guide formation */}
+{/* Start Ajouter Guide formation */}
+          <MesFormations />
+{/* End Ajouter Guide formation */}
     </div>
   );
 }
