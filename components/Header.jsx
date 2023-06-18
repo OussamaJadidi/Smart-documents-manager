@@ -25,7 +25,7 @@ export default function Header({name,prenom}) {
 
         <div className='hidden md:flex gap-4 items-center  '>
            <ul className='menuBigScreen flex font-satoshi font-medium'>
-               <li className='hover:text-blue-700 hover:font-semibold ml-2'><Link href="./">Accueil</Link></li>
+               <li className='hover:text-blue-700 hover:font-semibold ml-2'><a href="./Homme">Accueil</a></li>
                <li className='hover:text-blue-700 hover:font-semibold ml-2'><a href='#impressionDesDocuments'>Impression des documents</a></li>
                <li className='hover:text-blue-700 hover:font-semibold ml-2'><a href="#guideDesFormations">Guide Formations</a></li>
            </ul>

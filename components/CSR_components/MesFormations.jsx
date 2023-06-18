@@ -1,6 +1,17 @@
 import React from "react";
+import { PrismaClient } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export default function MesFormations() {
+export default async function MesFormations() {
+  const prisma = new PrismaClient();
+  const session = await getServerSession(authOptions)
+  const documnets = prisma.Document.findMany({
+    where:{
+      userId: session.user.id
+    }
+  })
   return (
     <>
       {/* Start Guide de formation  */}
@@ -11,6 +22,9 @@ export default function MesFormations() {
         >
           Mes formations :
         </h1>
+        <p>
+
+        </p>
       </div>
     </>
   );

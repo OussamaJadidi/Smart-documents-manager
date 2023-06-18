@@ -131,8 +131,9 @@ export default async function Homme() {
         <ImpressionDesDocuments />
 {/* End Impression des documents */}
 {/* Start Ajouter Guide formation */}
-          <AjouterGuideFormation />
+          <AjouterGuideFormation id="guideDesFormations" />
 {/* End Ajouter Guide formation */}
+
 {/* Start Ajouter Guide formation */}
           <MesFormations />
 {/* End Ajouter Guide formation */}

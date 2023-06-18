@@ -19,7 +19,7 @@ export default function Main() {
     BulletinDePaie: false,
   })
   return (
-    <div>
+    <div id="impressionDesDocuments">
      
 
       {/* Start impression des document Card  */}

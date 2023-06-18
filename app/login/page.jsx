@@ -15,7 +15,7 @@ export default function Login({ admin = false }) {
       redirect: false 
     })
     .then(callback =>{ if(callback?.error) {toast.error(callback.error)};
-    if(callback?.ok && !callback?.error){toast.success("Connectez-vous avec succès");
+    if(callback?.ok && !callback?.error){toast.success("Vous avez Connectez avec succès");
   window.location.href="/Homme"}})
   }
   return (

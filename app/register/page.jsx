@@ -5,32 +5,44 @@ import { toast } from "react-hot-toast";
 import Link from "next/link";
 export default function Register() {
   const [credentials, setCredentials] = useState({
-    nom: undefined,
-    prenom: undefined,
-    email: undefined,
-    ppr_cnt: undefined,
-    cin: undefined,
-    grade: undefined,
-    echelle: undefined,
-    echelon: undefined,
-    service: undefined,
-    option: undefined,
-    adresse: undefined,
-    sexe: undefined,
-    photo: undefined,
+    nom: "",
+    prenom: "",
+    email: "",
+    ppr_cnt: null,
+    cin: "",
+    grade: null,
+    echelle: null,
+    echelon: null,
+    service: "",
+    option: "",
+    adresse: "",
+    sexe: "",
+    photo: "",
   });
-  async function handleSubmit(e) {
-    e.preventDefault();
-    try{
-      const response = await fetch("/api/register", {
-        method: "POST",
-        body: JSON.stringify({...credentials }),
-      })
+ async function handleSubmit(e) {
+  e.preventDefault();
+  try {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      toast.success("User registered successfully");
+      // Handle the successful registration and redirect or perform other actions
+      window.location.href="/login"
+    } else {
+      const errorResponse = await response.json();
+      toast.error(errorResponse.error);
+      // Handle the error response from the API
     }
-    catch(error ){
-      console.log(error)
-    }
-  } 
+  } catch (error) {
+    console.log("An error occurred:", error);
+    toast.error("An error occurred while registering");
+    // Handle any other unexpected errors
+  }
+}
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-white">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -46,29 +58,10 @@ export default function Register() {
       </div>
 
       <div className="mt-10 mx-auto sm:w-full  w-10/12 overflow-hidden">
-        <htmlForm className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" action="#" method="POST">
           <div className="sm:flex sm:justify-between sm:flex-grow sm:gap-2">
             <div className="sm:w-1/2">
-              <label
-                htmlFor="nom"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Nom
-              </label>
-              <div className="mt-2">
-                <input
-                  id="nom"
-                  name="nom"
-                  type="text"
-                  value={credentials.nom}
-                  onChange={(e) => {
-                    setCredentials({ ...credentials, nom: e.target.value });
-                  }}
-                  autoComplete="family-name"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
+              
 
               <label
                 htmlFor="prenom"
@@ -93,6 +86,28 @@ export default function Register() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+
+              <label
+                htmlFor="nom"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Nom
+              </label>
+              <div className="mt-2">
+                <input
+                  id="nom"
+                  name="nom"
+                  type="text"
+                  value={credentials.nom}
+                  onChange={(e) => {
+                    setCredentials({ ...credentials, nom: e.target.value });
+                  }}
+                  autoComplete="family-name"
+                  required
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+              
               <label
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -311,7 +326,7 @@ export default function Register() {
               Register
             </button>
           </div>
-        </htmlForm>
+        </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Déja membre?

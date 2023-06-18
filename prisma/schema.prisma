@@ -12,21 +12,22 @@ model users {
 
   nom     String  @db.VarChar(50)
   prenom  String  @db.VarChar(50)
-  ppr     Int
+  ppr     Int?
   email   String?
-  cnt     Int
-  cin     String  @db.VarChar(50)
-  grade   Int
-  echelle Int
-  echelon Int
-  service String  @db.VarChar(255)
-  option  String  @db.VarChar(255)
-  adresse String  @db.VarChar(50)
-  sexe    String  @db.VarChar(50)
+  cnt     Int?
+  cin     String?  @db.VarChar(50)
+  grade   Int?
+  echelle Int?
+  echelon Int?
+  service String?  @db.VarChar(255)
+  option  String?  @db.VarChar(255)
+  adresse String?  @db.VarChar(50)
+  sexe    String?  @db.VarChar(50)
   image   Bytes?
   role    Role    @default(Basic)
-  @@unique([nom, prenom])
   documents   Document[]
+
+  @@unique([nom, prenom])
 }
 
 model Document {
