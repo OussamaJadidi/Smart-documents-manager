@@ -17,32 +17,32 @@ export default function Register() {
     option: "",
     adresse: "",
     sexe: "",
-    photo: "",
+    photo: null,
   });
- async function handleSubmit(e) {
-  e.preventDefault();
-  try {
-    const response = await fetch("/api/register", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify(credentials),
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      toast.success("User registered successfully");
-      // Handle the successful registration and redirect or perform other actions
-      window.location.href="/login"
-    } else {
-      const errorResponse = await response.json();
-      toast.error(errorResponse.error);
-      // Handle the error response from the API
+      if (response.ok) {
+        const data = await response.json();
+        toast.success("User registered successfully");
+        // Handle the successful registration and redirect or perform other actions
+        window.location.href = "/login";
+      } else {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.error);
+        // Handle the error response from the API
+      }
+    } catch (error) {
+      console.log("An error occurred:", error);
+      toast.error("An error occurred while registering");
+      // Handle any other unexpected errors
     }
-  } catch (error) {
-    console.log("An error occurred:", error);
-    toast.error("An error occurred while registering");
-    // Handle any other unexpected errors
   }
-}
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-white">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -61,8 +61,6 @@ export default function Register() {
         <form className="space-y-6" action="#" method="POST">
           <div className="sm:flex sm:justify-between sm:flex-grow sm:gap-2">
             <div className="sm:w-1/2">
-              
-
               <label
                 htmlFor="prenom"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -107,7 +105,7 @@ export default function Register() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
-              
+
               <label
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -307,10 +305,13 @@ export default function Register() {
                   name="photo"
                   type="file"
                   onChange={(e) => {
-                    setCredentials({
-                      ...credentials,
-                      photo: e.target.files[0],
-                    });
+                    
+                    console.log(e.target.files[0])
+                      setCredentials({
+                        ...credentials,
+                        photo: e.target.files[0],
+                      });
+
                   }}
                 />
               </div>

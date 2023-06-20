@@ -12,12 +12,14 @@ import MoreData from "@/../components/CSR_components/MoreData"
 import ImpressionDesDocuments from "@/components/CSR_components/ImpressionDesDocuments"
 import AjouterGuideFormation from "@/components/CSR_components/AjouterGuideFormation"
 import MesFormations from "@/components/CSR_components/MesFormations"
-
+import {redirect} from "next/navigation"
 export default async function Homme() {
   //Get the user data from the session
   const session = await getServerSession(authOptions);
-
-  //Start pulled buffered data from the database and convert it to an image
+  if(!session){
+      redirect("/login")
+  }
+ 
   //fetch the data base
   const prisma = new PrismaClient();
   const user = await prisma.users.findUnique({
@@ -29,7 +31,6 @@ export default async function Homme() {
     },
   });
   await prisma.$disconnect();
-  console.log("hiiiiiii")
   if(user.image){
 
       var bufferData = user.image; // The <Buffer> image data

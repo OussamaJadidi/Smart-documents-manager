@@ -18,7 +18,6 @@ export const POST = async (request) => {
       sexe,
       photo,
     } = body;
-    console.log(body);
     if (!nom || !prenom) {
       throw new Error("Missing fields");
     }
@@ -35,10 +34,7 @@ export const POST = async (request) => {
     if (exist) {
       throw new Error("User already Exist");
     }
-    // if (photo) {
-    //   const photoS = JSON.parse(photo);
-    //   var imageData = await photoS.arrayBuffer();
-    // }
+    
     const user = await prisma.users.create({
       data: {
         nom,
@@ -54,13 +50,15 @@ export const POST = async (request) => {
         option,
         adresse,
         sexe,
-        // image: imageData,
+        // image: formData,
       },
     });
-    
-    return new Response(JSON.stringify(user),{status:200});
+
+    return new Response(JSON.stringify(user), { status: 200 });
   } catch (error) {
     const errorMessage = error.message;
-    return new Response(JSON.stringify({ error: errorMessage }), { status: 400 });
+    return new Response(JSON.stringify({ error: errorMessage }), {
+      status: 400,
+    });
   }
-}
+};
