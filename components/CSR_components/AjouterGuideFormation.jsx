@@ -16,7 +16,7 @@ export default function AjouterGuideFormation() {
   }
 
   return (
-    <div id="guideDesFormations">
+    <div id="guideDesFormations"  >
       {/* Start Guide de formation  */}
       <div className="border relative left-[50%] translate-x-[-50%] border-black w-11/12 py-6 px-10 bg-gradient-to-r from-blue-50 to-transparent mt-4 rounded-lg overflow-hidden">
         <h1
@@ -25,7 +25,7 @@ export default function AjouterGuideFormation() {
         >
           Ajouter un guide de formation :
         </h1>
-        <div>
+        <div className="relative left-[50%] translate-x-[-50%] md:w-fit">
           <div className="w-10/12">
             <span className="font-medium">Titre : </span>
             <span>
@@ -43,7 +43,7 @@ export default function AjouterGuideFormation() {
               />
             </span>
           </div>
-          <div className="w-10/12 ">
+          <div className="">
             <span className="font-medium pr-4">Content : </span>
             <span>
               <input

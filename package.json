@@ -19,6 +19,7 @@
     "autoprefixer": "10.4.14",
     "docx": "^8.0.4",
     "docxtemplater": "^3.37.11",
+    "file-saver": "^2.0.5",
     "fs": "^0.0.1-security",
     "mysql": "^2.18.1",
     "next": "13.4.4",
