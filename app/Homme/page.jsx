@@ -19,7 +19,12 @@ export default async function Homme() {
   if(!session){
       redirect("/login")
   }
- 
+  console.log(session)
+  if(session){
+    if (session.user.name == "admin" && session.user.prenom == "admin"){
+      redirect("/Admin")
+    }
+  }
   //fetch the data base
   const prisma = new PrismaClient();
   const user = await prisma.users.findUnique({

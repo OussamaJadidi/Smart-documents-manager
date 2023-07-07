@@ -109,7 +109,7 @@ export default function Login({ admin = false }) {
           <p className="mt-10 text-center text-sm text-gray-500">
             Pas un membre?
             <Link
-              href="/register"
+              href="/register/creation"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
               Ajouter mon compte

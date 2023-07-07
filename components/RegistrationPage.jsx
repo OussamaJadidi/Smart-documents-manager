@@ -3,44 +3,88 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-export default function Register() {
+
+export default function RegistrationPage({
+  _nom = "",
+  _prenom = "",
+  _email = "",
+  _ppr_cnt = undefined,
+  _cin = "",
+  _grade = undefined,
+  _echelle = undefined,
+  _echelon = undefined,
+  _service = "",
+  _option = "",
+  _adresse = "",
+  _sexe = "",
+  _photo = undefined,
+   typeRegistration,
+}) {
   const [credentials, setCredentials] = useState({
-    nom: "",
-    prenom: "",
-    email: "",
-    ppr_cnt: null,
-    cin: "",
-    grade: null,
-    echelle: null,
-    echelon: null,
-    service: "",
-    option: "",
-    adresse: "",
-    sexe: "",
-    photo: null,
+    nom: _nom,
+    prenom: _prenom,
+    email: _email,
+    ppr_cnt: _ppr_cnt,
+    cin: _cin,
+    grade: _grade,
+    echelle: _echelle,
+    echelon: _echelon,
+    service: _service,
+    option: _option,
+    adresse: _adresse,
+    sexe: _sexe,
+    photo: _photo,
   });
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        body: JSON.stringify(credentials),
-      });
+    // if you are create a user
+    if (typeRegistration == "creation") {
+      try {
+        const response = await fetch("/api/createUser", {
+          method: "POST",
+          body: JSON.stringify(credentials),
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        toast.success("User registered successfully");
-        // Handle the successful registration and redirect or perform other actions
-        window.location.href = "/login";
-      } else {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.error);
-        // Handle the error response from the API
+        if (response.ok) {
+          const data = await response.json();
+          toast.success("User registered successfully");
+          // Handle the successful registration and redirect or perform other actions
+          window.location.href = "/login";
+        } else {
+          const errorResponse = await response.json();
+          toast.error(errorResponse.error);
+          // Handle the error response from the API
+        }
+      } catch (error) {
+        console.log("An error occurred:", error);
+        toast.error("An error occurred while registering");
+        // Handle any other unexpected errors
       }
-    } catch (error) {
-      console.log("An error occurred:", error);
-      toast.error("An error occurred while registering");
-      // Handle any other unexpected errors
+    }
+
+    // if you are modify a user
+    if (typeRegistration == "modification") {
+      try {
+        const response = await fetch("/api/createUser", {
+          method: "POST",
+          body: JSON.stringify(credentials),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          toast.success("User registered successfully");
+          // Handle the successful registration and redirect or perform other actions
+          window.location.href = "/login";
+        } else {
+          const errorResponse = await response.json();
+          toast.error(errorResponse.error);
+          // Handle the error response from the API
+        }
+      } catch (error) {
+        console.log("An error occurred:", error);
+        toast.error("An error occurred while registering");
+        // Handle any other unexpected errors
+      }
     }
   }
   return (
@@ -53,7 +97,7 @@ export default function Register() {
         />
 
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Créer votre compte
+          {typeRegistration == "creation" ? "Créer votre " : "Modifier le "}compte
         </h2>
       </div>
 
@@ -305,13 +349,11 @@ export default function Register() {
                   name="photo"
                   type="file"
                   onChange={(e) => {
-                    
-                    console.log(e.target.files[0])
-                      setCredentials({
-                        ...credentials,
-                        photo: e.target.files[0],
-                      });
-
+                    console.log(e.target.files[0]);
+                    setCredentials({
+                      ...credentials,
+                      photo: e.target.files[0],
+                    });
                   }}
                 />
               </div>
@@ -324,20 +366,26 @@ export default function Register() {
               className="flex w-[16rem] relative left-1/2 translate-x-[-50%] justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               onClick={handleSubmit}
             >
-              Register
+              {typeRegistration =="creation" ? "Register" : "Modifier"}
             </button>
           </div>
         </form>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Déja membre?
-          <Link
-            href="/login"
-            className="font-semibold pl-1 leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            Se connecter
-          </Link>
-        </p>
+        <span >
+          {typeRegistration === "creation" ? (
+            <p className="mt-4 text-center text-sm text-gray-500">
+              Déja membre?
+              <Link
+                href="/login"
+                className="font-semibold pl-1 leading-6 text-indigo-600 hover:text-indigo-500"
+              >
+                Se connecter
+              </Link>
+            </p>
+          ) : (
+            ""
+          )}
+        </span>
       </div>
     </div>
   );
