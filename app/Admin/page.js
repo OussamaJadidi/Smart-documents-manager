@@ -13,8 +13,8 @@ export default async  function Admin() {
     if (user.nom == "admin" && user.prenom == "admin") return;
     return (
       <Employee
-        key={user.id}
-        id= {user.id}
+        key={user.Id_user}
+        id= {user.Id_user}
         nom={user.nom}
         prenom={user.prenom}
         option={user.option}

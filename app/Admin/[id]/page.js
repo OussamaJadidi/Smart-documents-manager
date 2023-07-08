@@ -6,7 +6,7 @@ async function fetchTheUserData(id){
     const prisma = new PrismaClient()
     const userData = await prisma.users.findFirst({
         where:{
-            Id_user : "6552z",
+            Id_user : id,
         }
     })
     console.log(userData)
@@ -17,7 +17,7 @@ export default async function modifySomeOne({params}) {
         nom,
         prenom,
         email,
-        ppr_cnt,
+        ppr,
         cin,
         grade,
         echelle,
@@ -27,13 +27,13 @@ export default async function modifySomeOne({params}) {
         adresse,
         sexe,
         photo,
-    }= await fetchTheUserData("6552z")
+    }= await fetchTheUserData(params.id)
   return (
     <RegistrationPage
-        _nom= "hiii"
+        _nom= {nom}
         _prenom= {prenom}
         _email= {email}
-        _ppr_cnt= {ppr_cnt}
+        _ppr_cnt= {ppr}
         _cin= {cin}
         _grade= {grade}
         _echelle= {echelle}
