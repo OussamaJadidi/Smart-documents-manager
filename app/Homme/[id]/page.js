@@ -32,7 +32,7 @@ export default async function modifySomeOne({params}) {
    
   return (
     <div>
-        <Link href="/Admin"><button className="border border-black font-roboto rounded-md px-4 py-2 relative top-4 left-4"><FontAwesomeIcon icon={faArrowLeft} /> Page précédent </button></Link>
+        <Link href="/Homme"><button className="border border-black font-roboto rounded-md px-4 py-2 relative top-4 left-4"><FontAwesomeIcon icon={faArrowLeft} /> Page précédent </button></Link>
         <RegistrationPage
             _nom= {nom}
             _prenom= {prenom}

@@ -13,13 +13,13 @@ import ImpressionDesDocuments from "@/components/CSR_components/ImpressionDesDoc
 import AjouterGuideFormation from "@/components/CSR_components/AjouterGuideFormation"
 import MesFormations from "@/components/CSR_components/MesFormations"
 import {redirect} from "next/navigation"
+import Link from "next/link"
 export default async function Homme() {
   //Get the user data from the session
   const session = await getServerSession(authOptions);
   if(!session){
       redirect("/login")
   }
-  console.log(session)
   if(session){
     if (session.user.name == "admin" && session.user.prenom == "admin"){
       redirect("/Admin")
@@ -49,7 +49,7 @@ export default async function Homme() {
     <div className="w-full">
 {/* Start Header  */}
         {session && (
-          <Header name={session.user.name} prenom={session.user.prenom} />
+          <Header name={session.user.name} prenom={session.user.prenom} AreUTheAdmin="non" />
         )}
 {/* End Header  */}
 
@@ -59,7 +59,7 @@ export default async function Homme() {
         <div className="dataCard  flex justify-between  items-center">
           <div className="flex">
             <img
-              src={user.image ? ssrc: ""}
+              src={user.sexe =="Homme"? './assets/icons/male.png' : './assets/icons/female.png'}
               width={70}
               height={70}
               className="rounded-md hover:scale-110 transition-transform"
@@ -71,9 +71,11 @@ export default async function Homme() {
               </h4>
             </div>
           </div>
+          <Link href={`/Homme/${user.Id_user}`}>
           <button className=" w-fit bg-transparent hover:bg-green-100 h-10 px-2  hover:border hover:border-black rounded-md relative   font-medium flex items-center overflow-ellipsis">
             <FontAwesomeIcon icon={faPen} />
           </button>
+          </Link>
         </div>
 
         {/* More informations */}
@@ -89,41 +91,45 @@ export default async function Homme() {
           </h1>
           <div className="firstRow pl-8">
             <div>
-              <span className="font-roboto font-bold">Service : </span>
+              <span className="font-roboto font-semibold">Service : </span>
               <span>{session.user.service}</span>
             </div>
             <div>
-              <span className="font-roboto font-bold">Option : </span>
+              <span className="font-roboto font-semibold">Option : </span>
               <span>{session.user.option}</span>
             </div>
             <div>
-              <span className="font-roboto font-bold">Adresse : </span>
+              <span className="font-roboto font-semibold">Adresse : </span>
               <span>{session.user.adresse}</span>
             </div>
             <div>
-              <span className="font-roboto font-bold">CIN : </span>
+              <span className="font-roboto font-semibold">CIN : </span>
               <span>{session.user.cin}</span>
             </div>
             <div>
-              <span className="font-roboto font-bold">Sexe : </span>
+              <span className="font-roboto font-semibold">Sexe : </span>
               <span>{session.user.sexe}</span>
             </div>
           </div>
           <div className="secondRow pl-8">
+          <div>
+              <span className="font-roboto font-semibold">Email : </span>
+              <span>{session.user.email}</span>
+            </div>
             <div>
-              <span className="font-roboto font-bold">P.P.R/C.N.T : </span>
+              <span className="font-roboto font-semibold">P.P.R/C.N.T : </span>
               <span>{session.user.ppr}</span>
             </div>
             <div>
-              <span className="font-roboto font-bold">Grade : </span>
+              <span className="font-roboto font-semibold">Grade : </span>
               <span>{session.user.grade}</span>
             </div>
             <div>
-              <span className="font-roboto font-bold">Echelle : </span>
+              <span className="font-roboto font-semibold">Echelle : </span>
               <span>{session.user.echelle}</span>
             </div>
             <div>
-              <span className="font-roboto font-bold">Echelon : </span>
+              <span className="font-roboto font-semibold">Echelon : </span>
               <span>{session.user.echelon}</span>
             </div>
             

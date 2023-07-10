@@ -3,7 +3,9 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-
+import { Suspense } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 export default function RegistrationPage({
   _nom = "",
   _prenom = "",
@@ -17,10 +19,11 @@ export default function RegistrationPage({
   _option = "",
   _adresse = "",
   _sexe = "",
-  _photo = undefined,
-   typeRegistration,
+  _id = "",
+  typeRegistration,
 }) {
   const [credentials, setCredentials] = useState({
+    id: _id,
     nom: _nom,
     prenom: _prenom,
     email: _email,
@@ -33,7 +36,6 @@ export default function RegistrationPage({
     option: _option,
     adresse: _adresse,
     sexe: _sexe,
-    photo: _photo,
   });
   async function handleSubmit(e) {
     e.preventDefault();
@@ -60,21 +62,18 @@ export default function RegistrationPage({
         toast.error("An error occurred while registering");
         // Handle any other unexpected errors
       }
-    }
-
-    // if you are modify a user
-    if (typeRegistration == "modification") {
+    } else {
       try {
-        const response = await fetch("/api/createUser", {
-          method: "POST",
+        const response = await fetch("/api/updateUser", {
+          method: "PATCH",
           body: JSON.stringify(credentials),
         });
 
         if (response.ok) {
           const data = await response.json();
-          toast.success("User registered successfully");
+          toast.success("User modifed successfully");
           // Handle the successful registration and redirect or perform other actions
-          window.location.href = "/login";
+          window.location.href = "/Admin";
         } else {
           const errorResponse = await response.json();
           toast.error(errorResponse.error);
@@ -82,7 +81,7 @@ export default function RegistrationPage({
         }
       } catch (error) {
         console.log("An error occurred:", error);
-        toast.error("An error occurred while registering");
+        toast.error("An error occurred while modification");
         // Handle any other unexpected errors
       }
     }
@@ -97,7 +96,8 @@ export default function RegistrationPage({
         />
 
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          {typeRegistration == "creation" ? "Créer votre " : "Modifier le "}compte
+          {typeRegistration == "creation" ? "Créer votre " : "Modifier le "}
+          compte
         </h2>
       </div>
 
@@ -199,7 +199,10 @@ export default function RegistrationPage({
                   type="text"
                   value={credentials.ppr_cnt}
                   onChange={(e) => {
-                    setCredentials({ ...credentials, ppr_cnt: e.target.value });
+                    setCredentials({
+                      ...credentials,
+                      ppr_cnt: e.target.value,
+                    });
                   }}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -222,7 +225,10 @@ export default function RegistrationPage({
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
-              <div>
+              
+            </div>
+            <div className="sm:w-1/2">
+            <div>
                 <label
                   htmlFor="echelle"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -245,8 +251,6 @@ export default function RegistrationPage({
                   />
                 </div>
               </div>
-            </div>
-            <div className="sm:w-1/2">
               <label
                 htmlFor="echelon"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -260,7 +264,10 @@ export default function RegistrationPage({
                   type="text"
                   value={credentials.echelon}
                   onChange={(e) => {
-                    setCredentials({ ...credentials, echelon: e.target.value });
+                    setCredentials({
+                      ...credentials,
+                      echelon: e.target.value,
+                    });
                   }}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -278,7 +285,10 @@ export default function RegistrationPage({
                   type="text"
                   value={credentials.service}
                   onChange={(e) => {
-                    setCredentials({ ...credentials, service: e.target.value });
+                    setCredentials({
+                      ...credentials,
+                      service: e.target.value,
+                    });
                   }}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -296,7 +306,10 @@ export default function RegistrationPage({
                   type="text"
                   value={credentials.option}
                   onChange={(e) => {
-                    setCredentials({ ...credentials, option: e.target.value });
+                    setCredentials({
+                      ...credentials,
+                      option: e.target.value,
+                    });
                   }}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -314,7 +327,10 @@ export default function RegistrationPage({
                   type="text"
                   value={credentials.adresse}
                   onChange={(e) => {
-                    setCredentials({ ...credentials, adresse: e.target.value });
+                    setCredentials({
+                      ...credentials,
+                      adresse: e.target.value,
+                    });
                   }}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -337,7 +353,7 @@ export default function RegistrationPage({
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
-              <label
+              {/* <label
                 htmlFor="photo"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
@@ -349,29 +365,82 @@ export default function RegistrationPage({
                   name="photo"
                   type="file"
                   onChange={(e) => {
-                    console.log(e.target.files[0]);
-                    setCredentials({
-                      ...credentials,
-                      photo: e.target.files[0],
-                    });
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+
+                    reader.onload = (event) => {
+                      const binaryData = event.target.result; // Binary data as ArrayBuffer
+                      const uint8Array = new Uint8Array(binaryData);
+                      const hexadecimal = Array.from(uint8Array)
+                        .map((byte) => byte.toString(16).padStart(2, "0"))
+                        .join("");
+                      console.log("the binary data", hexadecimal);
+                      setCredentials({
+                        ...credentials,
+                        photo: hexadecimal, // Pass the binary data directly
+                      });
+                    };
+
+                    reader.readAsArrayBuffer(file);
                   }}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
-          <div>
+          <div className=" sm:flex justify-center  items-center gap-4 max-sm ">
+            {typeRegistration == "modifier" && (
+              <Link href="../">
+                <button
+                  className="max-sm:m-auto flex w-[16rem]  justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  type="button"
+                >
+                  Annuler
+                </button>
+              </Link>
+            )}
             <button
               type="submit"
-              className="flex w-[16rem] relative left-1/2 translate-x-[-50%] justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="max-sm:mt-2 max-sm:m-auto flex w-[16rem]  justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               onClick={handleSubmit}
             >
-              {typeRegistration =="creation" ? "Register" : "Modifier"}
+              {typeRegistration == "creation" ? "Register" : "Modifier"}
             </button>
+          </div>
+          <div>
+            {typeRegistration == "modifier" && (
+              <div className="flex justify-center items-center">
+                <button
+                  className="text-sm text-gray-600 text-center hover:border-b-2 cursor-pointer hover:text-gray-500"
+                  type="button"
+                  onClick={() => {
+                    setCredentials((credential) => ({
+                      id: _id,
+                      nom: _nom,
+                      prenom: _prenom,
+                      email: _email,
+                      ppr_cnt: _ppr_cnt,
+                      cin: _cin,
+                      grade: _grade,
+                      echelle: _echelle,
+                      echelon: _echelon,
+                      service: _service,
+                      option: _option,
+                      adresse: _adresse,
+                      sexe: _sexe,
+                      photo: _photo,
+                    }));
+                  }}
+                >
+                  <FontAwesomeIcon icon={faRotateRight} /> Réinitialiser les
+                  données
+                </button>
+              </div>
+            )}
           </div>
         </form>
 
-        <span >
+        <span>
           {typeRegistration === "creation" ? (
             <p className="mt-4 text-center text-sm text-gray-500">
               Déja membre?

@@ -27,7 +27,7 @@ export default function Template({children,title, handleDocumentsComponents}) {
             </button>
         </div>
     </div>
-    <div className='absolute top-0 bottom-0 right-0 left-0 bg-gradient-to-t from-gray-400 to to-transparent z-10' onClick={() => {handleDocumentsComponents()}}></div>
+    <div className='fixed top-0 bottom-0 right-0 left-0 bg-gradient-to-t from-gray-400 to to-transparent z-10' onClick={() => {handleDocumentsComponents()}}></div>
     </div>
   )
 }

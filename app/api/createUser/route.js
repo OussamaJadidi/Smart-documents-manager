@@ -16,12 +16,10 @@ export const POST = async (request) => {
       option,
       adresse,
       sexe,
-      photo,
     } = body;
     if (!nom || !prenom) {
       throw new Error("Missing fields");
     }
-
     const prisma = new PrismaClient();
     const exist = await prisma.users.findUnique({
       where: {
@@ -40,17 +38,16 @@ export const POST = async (request) => {
         nom,
         prenom,
         email,
-        ppr: ppr_cnt,
-        cnt: ppr_cnt,
+        ppr: +ppr_cnt,
+        cnt: +ppr_cnt,
         cin,
-        grade,
-        echelle,
-        echelon,
+        grade: +grade,
+        echelle: +echelle,
+        echelon: +echelon,
         service,
         option,
         adresse,
         sexe,
-        // image: formData,
       },
     });
 

@@ -2,67 +2,51 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import RegistrationPage from "@/components/RegistrationPage";
-import { SignoutLg, SignoutSm } from '/components/Buttons'
- 
-export default async  function Admin() {
-  
-  const response = await fetch("http://localhost:3000/api/getAllUsers");
-  const users = await response.json();
-  
-  const  allUsers = users.map((user) => {
-    if (user.nom == "admin" && user.prenom == "admin") return;
-    return (
-      <Employee
-        key={user.Id_user}
-        id= {user.Id_user}
-        nom={user.nom}
-        prenom={user.prenom}
-        option={user.option}
-        gender={user.sexe}
-        img={user.img}
-      />
-    );
-  });
+import { SignoutLg, SignoutSm } from "/components/Buttons";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+import { PrismaClient } from "@prisma/client";
+import { DeleteUserButton, FilterProfil, ModifyUser } from "@/components/Buttons";
+import Header from "@/components/Header";
+import AdminMainPage from "@/components/AdminMainPage";
+
+export default async function Admin() {
+  //Get the user data from the session
+
+  // const response = await fetch("http://localhost:3000/api/getAllUsers",{
+  //   cahce: "no-cache"
+  // });
+  // const users = await response.json();
+  const prisma = new PrismaClient();
+  const users = await prisma.users.findMany();
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
+  if(session.user.role !=="Admin"){
+    redirect("/login");
+  }
   return (
     <div>
       {/* Start the header  */}
-      <header className = 'header font-satoshi flex justify-between items-center pr-4 ' >
-        <div>
-          <img src="/assets/icons/chu.jpg" alt="CHU logo" width={120} height={120} />
-        </div>
-
-        <div className='flex gap-4 items-center  '>
-          
-           <SignoutLg />
-        </div> 
-        
-       
-    </header>
+      <Header AreUTheAdmin="yes" />
       {/* End the header  */}
-      <div className="bg-white py-8 sm:py-16" >
-        <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Bonjour Admin
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Cliquez sur n’importe qui et accédez à son profil pour modifier
-              ses informations !
-            </p>
-          </div>
-          <ul
-            className="grid gap-x-8 gap-y-8  sm:grid-cols-2 sm:gap-y-16 xl:col-span-2"
-          >
-            {allUsers}
-          </ul>
-        </div>
+      <div className="bg-white py-8 sm:py-16">
+        <AdminMainPage users = {users}/>
       </div>
-      
     </div>
   );
 }
 
-function Employee({ id,nom, prenom, option, gender, img }) {
+export function Employee({ id, nom, prenom, option, gender, img }) {
+  let iconSrc
+  if(gender==="Homme"){
+    iconSrc="./assets/icons/male.png"
+  }else{
+    iconSrc="./assets/icons/female.png"
+
+  }
   return (
     <li className="border-4 border-gray rounded-md p-2 flex items-center justify-between ">
       <div
@@ -71,7 +55,7 @@ function Employee({ id,nom, prenom, option, gender, img }) {
       >
         <img
           className="h-16 w-16 rounded-full"
-          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+          src={iconSrc}
           alt=""
         />
         <div>
@@ -85,21 +69,10 @@ function Employee({ id,nom, prenom, option, gender, img }) {
       </div>
 
       <div>
-        <Link href = {`Admin/${id}`}>
-        <button
-          title="modifier informations"
-          className=" w-fit bg-transparent hover:bg-green-100 h-10 px-2  hover:border hover:border-black rounded-md relative   font-medium flex items-center overflow-ellipsis"
-    
-        >
-          <FontAwesomeIcon icon={faPen} />
-        </button>
+        <Link href={`Admin/${id}`}>
+          <ModifyUser />
         </Link>
-        <button
-          title="Supprimer ce compte"
-          className=" w-fit bg-transparent hover:bg-red-200 h-10 px-2  hover:border hover:border-black rounded-md relative   font-medium flex items-center overflow-ellipsis"
-        >
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
+        <DeleteUserButton id={id} />
       </div>
     </li>
   );
